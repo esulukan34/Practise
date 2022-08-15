@@ -83,6 +83,7 @@ public class Islemler {
     private static void cikis() {
 
         System.out.println("Yine bekleriz okulumuza, hoscakalin");
+        System.out.println("Yine bekleriz okulumuza");
 
     }
 
