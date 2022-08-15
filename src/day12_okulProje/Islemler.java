@@ -15,6 +15,7 @@ public class Islemler {
     //gokteki ay gibi heryeden ulaşılabilsin
     public static void girisPaneli() {
         System.out.println("====================================");
+        System.out.println("github ta yapilan degisiklik");
         System.out.println("ÖĞRENCİ VE ÖĞRETMEN YÖNETİM PANELİ");
         System.out.println("====================================");
         System.out.println("1- ÖĞRENCİ İŞLEMLERİ");
