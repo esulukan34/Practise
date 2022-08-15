@@ -84,6 +84,7 @@ public class Islemler {
 
         System.out.println("Yine bekleriz okulumuza, hoscakalin");
         System.out.println("Yine bekleriz okulumuza");
+        System.out.println("Yine bekleriz okulumuza g");
 
     }
 
