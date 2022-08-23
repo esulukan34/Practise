@@ -1,13 +1,14 @@
 package lambda_practise;
-
-
 import java.util.*;
 import java.util.stream.Collectors;
-
-public class Lambda01 { // okul projesinde listele vb lambda expression ile yapiniz
+import java.util.stream.Stream;
+public class Lambda01 {//okul projesinde listele vb lamda expression ile yapiniz
     static ArrayList<String> names = new ArrayList<>(
-            Arrays.asList("Tulay", "zekeriya", "hasan", "ismail", "osman", "fatih", "Ersin", "Mevlit"));
-    static List<Integer> numbers = new ArrayList<>(Arrays.asList(25, 65, -56, 55, 98, -89, 65, 55, 21, 54, 9, 35, 35, 34));
+            Arrays.asList("Tulay", "zekeriya", "hasan", "ismail", "osman", "fatih","Ersin","Mevlit"));
+    static List<Integer> numbers=new ArrayList<>(Arrays.asList(25,65,-56,55,98,-89,65,55,21,-54,9,35,35,34));
+
+    static List<String> menu = new ArrayList<>(Arrays.asList("kusleme", "adana", "trilice", "havucdilim", "buryan",
+            "kokorec", "kuzutandir", "guvec"));
 
     /* TASK :
      * Input olarak verilen listteki isimlerden
@@ -16,7 +17,7 @@ public class Lambda01 { // okul projesinde listele vb lambda expression ile yapi
      * INPUT : list1={"Ali","Veli","Ayse","Fatma","Omer"}
      * OUTPUT : [Veli,Omer]
      */
-    public static void aHarfleriSilenGerisiniYazdiran(ArrayList<String> isimler) {
+    public static void aHarfleriSilenGerisiniYazdiran(ArrayList<String> isimler){
 //        System.out.println(isimler.stream()//akiisa alindi
 //                .map(m -> m.toLowerCase())//hepsi kucuk harffe cevrilfi
 //                .filter(m -> !m.contains("a"))//a harfi olmayanlar filtrelendi
@@ -26,13 +27,12 @@ public class Lambda01 { // okul projesinde listele vb lambda expression ile yapi
 //                .filter(m -> !m.contains("a") && !m.contains("A"))//a harfi olmayanlar filtrelendi
 //                .collect(Collectors.toList()));//lisste atildi
 //3.yol
-        isimler.removeIf(t -> t.contains("a") || t.contains("A"));
+        isimler.removeIf(t->t.contains("a") || t.contains("A"));
         System.out.println(names);
     }
-
     //en buyyk elemani bulun
-    public static void maxElemanBul(List<Integer> sayi) {
-        Optional<Integer> maxSayi =
+    public static void maxElemanBul(List<Integer> sayi){
+        Optional<Integer> maxSayi=
                 sayi.stream().
                         reduce(Math::max);
         System.out.println("maxSayi = " + maxSayi);
@@ -48,10 +48,9 @@ public class Lambda01 { // okul projesinde listele vb lambda expression ile yapi
 //                reduce işleminde bir önceki hesaplanmış değer ile sıradaki değer bir işleme tabi tutulmaktadır.
 //        İşleme başlarken bir önceki değer olmadığı için bu değer identity parametresinde tanımlanmaktadır.
     }
-
     // Task : List'teki tum elemanlarin toplamini yazdiriniz.
     //Lambda Expression...
-    public static void elemanlariTopla(List<Integer> sayilar) {
+    public static void elemanlariTopla(List<Integer> sayilar){
         System.out.println("sayilar.stream().reduce(0,(a,b)-> a+b) = " +
                 sayilar.stream()
                         .reduce(0, (a, b) -> a + b));
@@ -59,19 +58,95 @@ public class Lambda01 { // okul projesinde listele vb lambda expression ile yapi
                 reduce(Integer::sum).get());//spesifik methoda daha hizlidir
     }
     // Task : List'teki cift elemanlarin carpimini  yazdiriniz.
-
-    public static void elemanlariCarp(List<Integer> sayilar) {
+    public static void elemanlariCarp(List<Integer> sayilar){
         //lambda expression ile
-        System.out.println("sayilar.stream().reduce(1,(a,b)-> a+b) = " +
+        System.out.println("sayilar.stream().reduce(1,(a,b)-> a*b) = " +
                 sayilar.stream()
-                        .filter(Methodlarim::ciftElemaniBul)// burda method ref kullanildi kendi class 'imizda
-                        // create ettigimiz seed methodu kullandik
+                        .filter(Methodlarim::ciftElemaniBul)//method ref kullanildi kendi class imizda
+                        // create ettigimiz seed methodu kulandik
                         .reduce(1, (a, b) -> a * b));
-
         //method referans ile
         System.out.println(sayilar.stream().filter(Methodlarim::ciftElemaniBul)
                 .reduce(Math::multiplyExact));
+    }
+    //TODO task tek sayilarin karesini buyukten kucuge
+    public static void teklerinKareBuyuktenKucuge(List<Integer> sayi) {
+
+        sayi.stream() // liste akisa alindi
+                .filter(t-> t % 2 == 1) // tek olan rakamlari filtreledim
+                .map(t-> t * t) // her tek sayinin karesi alindi
+                .sorted(Comparator.reverseOrder()) // buyukten kucuge siralandi
+                .forEach(Methodlarim :: yazdir); // seed method kullanarak yazdirildi
+    }
+    // Task : List elemanlarini alafabetik buyuk harf ve  tekrarsiz print ediniz.
+    public static void alfabetikBuyukHarfTekrarsiz(List<String> yemek) {
+    }
+    // Task : list elelmanlarinin character sayisini ters sirali olarak tekrarsiz print ediniz..
+    public static void strKarakterSayisiYazdir(List<String> yemek) {
+    }
+    // Task :TODO list elemanlarinin son harfine gore ters sirali print ediniz.
+    public static void sonHarfeGoreTersSira(List<String> yemek) {
+
+        yemek.stream()
+                .sorted(Comparator // siralama aksiyonuna girildi
+                        .comparing(t-> t.toString() // her bir eleman string cevrildi
+                                .charAt(t.toString().length()-1)) //son karakter i charAt ile alindi
+                        .reversed()) // son harfe gore tersine siraladi
+                .forEach(Methodlarim:: yazdir); // yazdirildi
 
 
+
+    }
+    // Task : listin elemanlarin karakterlerinin cift sayili  karelerini hesaplayan,ve karelerini tekrarsiz
+    // buyukten kucuge sirali  print ediniz..
+    public static void karakterCiftKareBuyuktenKucuge(List<String> yemek) {
+    }
+    // TODO Task : List elelmmalarinin karakter sayisini 7 ve 7 'den az olma durumunu kontrol ediniz.
+    public static void karakterSayiYedidenBuyuk(List<String> yemek) {
+    // ilkel yontem ile
+        boolean kontrol = yemek.stream().allMatch(t-> t.length()<=7);// true gelirse if calisacak
+        if(kontrol){
+            System.out.println("list elemanlari 7 ve daha az harften olusmus");
+        }else
+            System.out.println("bazi elemanlar 7 den buyuk");
+    // modern yazim java 8'in faydalari
+        System.out.println(yemek.stream() //akisa alindi
+                .allMatch(t -> t.length() <= 7) ? "list elemanlari 7 ve daha az harften olusmus " : // 7'den kucuk olma durumu kontrol edildi.ternary ile sarta bakildi
+                "bazi elemanlar 7 den buyuk"); // false ise mesaj gonderildi
+
+
+    }
+    //anyMatch() --> enaz bir eleman sarti saglarsa true aksi durumda false return eder
+    //allMatch() --> tum  elemanlar sarti saglarsa true en az bir eleman sarti saglamazsa false return eder.
+    //noneMatch() --> hic bir sarti SAGLAMAZSA true en az bir eleman sarti SAGLARSA false return eder.
+    // Task : List elelmanlarinin "W" ile baslamasını kontrol ediniz.
+    public static void basHarfiWIleBaslayan(List<String> yemek) {
+    }
+    // TODO Task : List elelmanlarinin "x" ile biten en az bir elemanı kontrol ediniz.
+    public static void xIleBitenEleman(List<String> yemek) {
+    }
+    // TODO Task : Karakter sayisi en buyuk elemani yazdiriniz.
+    public static void karkterEnFazla(List<String> yemek) {
+        // limit(1) => Sınırlandırma demek. Bu akışın elemanlarından oluşan, uzunluğu maxSize'dan uzun olmayacak
+        // şekilde kesilmiş bir akış return eder. Stream return eder.
+        Stream <String> sonIsim = // limit kullandigimiz icin bu sonucu sonIsim objesine atadik
+                yemek.stream() // akisa alindi
+                        .sorted(Comparator // siralama
+                                .comparing(t-> t.toString().length()) // siralamayi length'ine gore yaptik
+                                .reversed()) // tersine cevirdik yani karakter sayisi en cok olan en basa geldi
+                        .limit(1);// limit ile ilk elemani aldik, yan ilisteyi ilk eleman ile sinirladik
+
+        System.out.println( // sonIsim objesi data turu stream oldugu icin bunu array'e cevirmek gerekli
+                Arrays.toString // array olanlari stringe donusturup yazdirmamizi saglar
+                        (sonIsim.toArray())); // Stream tipi array'e cevrildi
+    }
+    /*
+TRİCK : •    Stream'ler ekrana direk yazdırılamaz. Stream'i toArray() ile Array'e çeviririz.
+Array'i de Arrays.toString() 'in içine alıp yazdırabiliriz.
+•  Ör; System.out.println(Arrays.toString(***.toArray())); veya System.out.println(Arrays.asList(***.toArray()));
+kullanılabilir.
+*/
+    //TODO Task : list elemanlarini son harfine göre siralayıp ilk eleman hariç kalan elemanlari print ediniz.
+    public static void sonHarfeGoreSiralaIlkHaricElmanlariYaz(List<String> yemek) {
     }
 }
